@@ -1,14 +1,14 @@
-package hard_test
+package fancy_test
 
 import (
-	"leetcode/hard"
+	"leetcode/hard/fancy"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFancy(t *testing.T) {
-	fancy := hard.Constructor()
+	fancy := fancy.Constructor()
 	fancy.Append(2)                        // fancy sequence: [2]
 	fancy.AddAll(3)                        // fancy sequence: [2+3] -> [5]
 	fancy.Append(7)                        // fancy sequence: [5, 7]

@@ -1,4 +1,4 @@
-package hard
+package uniquePaths
 
 func UniquePathsIII(grid [][]int) int {
 	return uniquePathsIII(grid)

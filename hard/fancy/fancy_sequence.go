@@ -1,4 +1,8 @@
-package hard
+package fancy
+
+import "leetcode/hard"
+
+type Mnum = hard.Mnum
 
 type Fancy struct {
 	cap  int

@@ -1,7 +1,7 @@
-package hard_test
+package uniquePaths_test
 
 import (
-	"leetcode/hard"
+	"leetcode/hard/uniquePaths"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,7 +9,7 @@ import (
 
 func TestUniquePathsIII(t *testing.T) {
 	assert.Equal(t, 2,
-		hard.UniquePathsIII([][]int{
+		uniquePaths.UniquePathsIII([][]int{
 			{1, 0, 0, 0},
 			{0, 0, 0, 0},
 			{0, 0, 2, -1}}))
