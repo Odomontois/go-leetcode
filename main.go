@@ -5,6 +5,12 @@ import "fmt"
 type X struct{}
 
 func main() {
+	var node *ListNode
+	node = node.Next
 	fmt.Println("Hello")
-	x := make([]X, 4)
+}
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
 }
