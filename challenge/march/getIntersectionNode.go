@@ -11,7 +11,8 @@ func GetIntersectionNode(headA, headB *ListNode) *ListNode {
 
 func getIntersectionNode(headA, headB *ListNode) (res *ListNode) {
 	headA = invert(headA)
-	for res = headB; res != nil && res.Val > 0; res = res.Next {
+	for res = headB; res != nil && res.Val > 0; {
+		res = res.Next
 	}
 	headB = invert(headB)
 	headA = invert(headA)
