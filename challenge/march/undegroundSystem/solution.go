@@ -1,44 +1,28 @@
 package undegroundSystem
 
-type Route struct {
-	from, to string
-}
-
 type Place struct {
 	current string
 	depart  int
 }
-
-type State struct {
-	sum, count int
-}
-
 type UndergroundSystem struct {
 	current map[int]Place
-	stat    map[Route]State
+	stat    map[[2]string][2]int
 }
 
-func Constructor() (sys UndergroundSystem) {
-	sys.current = make(map[int]Place)
-	sys.stat = make(map[Route]State)
-	return
+func Constructor() UndergroundSystem {
+	return UndergroundSystem{make(map[int]Place), make(map[[2]string][2]int)}
 }
-
 func (us *UndergroundSystem) CheckIn(id int, stationName string, t int) {
 	us.current[id] = Place{stationName, t}
 }
-
 func (us *UndergroundSystem) CheckOut(id int, stationName string, t int) {
 	place := us.current[id]
 	delete(us.current, id)
-	route := Route{place.current, stationName}
+	route := [2]string{place.current, stationName}
 	state := us.stat[route]
-	state.sum += t - place.depart
-	state.count++
-	us.stat[route] = state
+	us.stat[route] = [2]int{state[0] + t - place.depart, state[1] + 1}
 }
-
-func (us *UndergroundSystem) GetAverageTime(startStation string, endStation string) float64 {
-	state := us.stat[Route{startStation, endStation}]
-	return float64(state.sum) / float64(state.count)
+func (us *UndergroundSystem) GetAverageTime(start string, end string) float64 {
+	state := us.stat[[2]string{start, end}]
+	return float64(state[0]) / float64(state[1])
 }
