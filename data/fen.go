@@ -1,4 +1,4 @@
-package fen
+package data
 
 type Fen struct {
 	size  int
