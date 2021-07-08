@@ -36,5 +36,5 @@ func add(hhs HHSet, batch []uint64) HHSet {
 }
 
 func longestCommonSubpath(n int, paths [][]int) int {
-
+	panic("todo")
 }
