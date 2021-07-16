@@ -8,3 +8,7 @@ type TreeNode struct {
 func TNode(val int, left, right *TreeNode) *TreeNode {
 	return &TreeNode{val, left, right}
 }
+
+func TLeaf(val int) *TreeNode {
+	return &TreeNode{val, nil, nil}
+}
