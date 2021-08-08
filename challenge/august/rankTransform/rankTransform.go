@@ -1,6 +1,9 @@
 package main
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 type Node struct {
 	children []*Node
@@ -148,4 +151,15 @@ func matrixRankTransform(matrix [][]int) [][]int {
 	}
 
 	return res
+}
+
+func main() {
+	fmt.Printf(
+		"%+v",
+		matrixRankTransform([][]int{
+			{11, 2, 3, 2},
+			{2, 11, 7, 1},
+			{1, 8, 5, 1},
+		}),
+	)
 }
