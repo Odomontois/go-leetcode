@@ -11,26 +11,22 @@ type Tree struct {
 
 func sumOfDistancesInTree(n int, edges [][]int) []int {
 	tree := buildTree(0, -1, buildEdgeMap(n, edges))
-	tree.fillSubTreeDists()
 	res := make([]int, n)
-	tree.descentFillDists(res, 0, 0)
+	tree.fillDists(res)
 	return res
 }
 
-func (t *Tree) descentFillDists(dists []int, parentSum, parentCount int) {
-	dists[t.idx] = parentSum + t.sum
+func (t *Tree) fillDists(dists []int) {
+	dists[t.idx] = t.sum
 	for _, child := range t.children {
-		curCount := parentCount + t.count - child.count
-		curSum := parentSum + t.sum - child.sum - child.count + curCount - 1
-		child.descentFillDists(dists, curSum, curCount)
+		child.descentFillDists(dists, t.sum)
 	}
 }
 
-func (t *Tree) fillSubTreeDists() {
+func (t *Tree) descentFillDists(dists []int, parentSum int) {
+	dists[t.idx] = parentSum - 2*t.count + len(dists) - 2
 	for _, child := range t.children {
-		child.fillSubTreeDists()
-		t.sum += child.sum + child.count + 1
-		t.count += child.count + 1
+		child.descentFillDists(dists, dists[t.idx])
 	}
 }
 
@@ -50,7 +46,10 @@ func buildTree(start int, parent int, edges [][]int) *Tree {
 		if child == parent {
 			continue
 		}
-		tree.children = append(tree.children, buildTree(child, start, edges))
+		child := buildTree(child, start, edges)
+		tree.children = append(tree.children, child)
+		tree.sum += child.sum + child.count + 1
+		tree.count += child.count + 1
 	}
 	return &tree
 }
