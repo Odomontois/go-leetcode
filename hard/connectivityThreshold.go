@@ -1,7 +1,7 @@
 package hard
 
 func areConnected(n int, threshold int, queries [][]int) (result []bool) {
-	ds := make([]DS, n+1)
+	ds := make([]disjoint, n+1)
 	result = make([]bool, len(queries))
 	for i := range ds {
 		ds[i].size = 1
@@ -18,12 +18,12 @@ func areConnected(n int, threshold int, queries [][]int) (result []bool) {
 	return
 }
 
-type DS struct {
-	parent *DS
+type disjoint struct {
+	parent *disjoint
 	size   int
 }
 
-func (ds *DS) GetParent() *DS {
+func (ds *disjoint) GetParent() *disjoint {
 	if ds.parent == nil {
 		return ds
 	}
@@ -32,7 +32,7 @@ func (ds *DS) GetParent() *DS {
 	return p
 }
 
-func (ds *DS) Join(other *DS) {
+func (ds *disjoint) Join(other *disjoint) {
 	lp, rp := ds.GetParent(), other.GetParent()
 	if lp == rp {
 		return

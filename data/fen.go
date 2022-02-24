@@ -1,5 +1,6 @@
 package data
 
+//Fen a Fenwick tree implementation
 type Fen struct {
 	size  int
 	elems []int

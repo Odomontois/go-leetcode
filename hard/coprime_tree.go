@@ -29,37 +29,37 @@ func gcd(x int, y int) int {
 	return gcd(y, x%y)
 }
 
-type Graph struct {
+type graph struct {
 	size  int
 	adj   [][]int
-	stack *[]StackItem
+	stack *[]stackItem
 }
 
-type StackItem struct {
+type stackItem struct {
 	next  []int
 	idx   int
 	state interface{}
 }
 
-func makeGraph(size int, edges [][]int) Graph {
+func makeGraph(size int, edges [][]int) graph {
 	adj := make([][]int, size)
 	for _, v := range edges {
 		adj[v[0]] = append(adj[v[0]], v[1])
 		adj[v[1]] = append(adj[v[1]], v[0])
 	}
-	return Graph{size, adj, nil}
+	return graph{size, adj, nil}
 }
 
-func (g Graph) Current() interface{} {
+func (g graph) Current() interface{} {
 	if g.stack == nil || len(*g.stack) == 0 {
 		return nil
 	}
 	return (*g.stack)[len(*g.stack)-1].state
 }
 
-func (g Graph) Dfs(start int, down func(int) interface{}, up func(int)) {
+func (g graph) Dfs(start int, down func(int) interface{}, up func(int)) {
 	init := down(start)
-	stack := []StackItem{{g.adj[start], start, init}}
+	stack := []stackItem{{g.adj[start], start, init}}
 	seen := make([]bool, g.size)
 	seen[start] = true
 	g.stack = &stack
@@ -81,7 +81,7 @@ func (g Graph) Dfs(start int, down func(int) interface{}, up func(int)) {
 		seen[i] = true
 		state := down(i)
 
-		stack = append(stack, StackItem{g.adj[i], i, state})
+		stack = append(stack, stackItem{g.adj[i], i, state})
 	}
 	g.stack = nil
 }

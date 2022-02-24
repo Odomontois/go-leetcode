@@ -1,7 +1,7 @@
 package february_test
 
 import (
-	"leetcode/challenge/february"
+	"leetcode/challenge/y2021/february"
 	"testing"
 )
 

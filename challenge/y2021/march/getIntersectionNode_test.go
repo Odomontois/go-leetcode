@@ -1,7 +1,7 @@
 package march_test
 
 import (
-	"leetcode/challenge/march"
+	"leetcode/challenge/y2021/march"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

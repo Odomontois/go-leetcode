@@ -9,12 +9,16 @@ func waysToFillArray(queries [][]int) []int {
 	}
 	return res
 }
+
+//WaysToFillArray ...
 func WaysToFillArray(queries [][]int) []int {
 	return waysToFillArray(queries)
 }
 
+//Primes ...
 type Primes []int
 
+//MakePrimes ...
 func MakePrimes(n int) Primes {
 	primes := []int{2, 3, 5}
 	ks := [2]int{1, 5}
@@ -35,8 +39,10 @@ func MakePrimes(n int) Primes {
 	return primes
 }
 
+//Fact ...
 type Fact []Mnum
 
+//MakeFact ...
 func MakeFact(n int) Fact {
 	res := []Mnum{1}
 	var cur Mnum = 1
@@ -47,23 +53,28 @@ func MakeFact(n int) Fact {
 	return res
 }
 
+//Comb is a combinations
 func (fact Fact) Comb(n int, k int) Mnum {
 	return fact[n].Divide(fact[k]).Divide(fact[n-k])
 }
 
+//CombRep combinations with replacement
 func (fact Fact) CombRep(n int, k int) Mnum {
 	return fact.Comb(n+k-1, n)
 }
 
+//Fill ...
 type Fill struct {
 	c      Fact
 	primes Primes
 }
 
+//MakeFill ...
 func MakeFill(l int, n int) Fill {
 	return Fill{c: MakeFact(l + 32), primes: MakePrimes(n)}
 }
 
+//ArrLen ...
 func (fill Fill) ArrLen(n int, k int) int {
 	var res int64 = 1
 	for _, d := range fill.primes.Divs(k) {
@@ -72,11 +83,13 @@ func (fill Fill) ArrLen(n int, k int) int {
 	return int(res)
 }
 
+//Div ...
 type Div struct {
 	div   int
 	count int
 }
 
+//Divs ...
 func (ps Primes) Divs(n int) []Div {
 	res := make([]Div, 0)
 	for _, p := range ps {

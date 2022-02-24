@@ -8,6 +8,8 @@ func max(x int, y int) int {
 	}
 	return y
 }
+
+//StoneGameV ..
 func StoneGameV(stoneValue []int) int {
 	n := len(stoneValue)
 	if n <= 1 {

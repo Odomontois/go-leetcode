@@ -27,6 +27,7 @@ func countRangeSum(nums []int, lower int, upper int) int {
 	return res
 }
 
+// Fen is a fenwick tree
 type Fen struct {
 	size  int
 	elems []int
