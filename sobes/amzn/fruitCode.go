@@ -1,58 +1,84 @@
 package amzn
 
-import (
-	"regexp"
-	"strings"
-)
-
-func fruitCode(code [][]string, cart []string) (bool, error) {
+func fruitCode(codes [][]string, cart []string) bool {
 	enc := makeEncoder()
-	enc.encodeCode(code)
-	codeString := enc.Buf.String()
-	enc.Buf.Reset()
-	enc.encodeSlice(cart)
-	basketString := enc.Buf.String()
-	codeRegex, err := regexp.Compile(codeString)
-	if err != nil {
-		return false, err
+	cartC := enc.encodeSlice(cart)
+	matched := 0
+
+	for _, code := range codes {
+		var index kmp
+		codeC := enc.encodeSlice(code)
+		index.build(codeC)
+		i := index.search(codeC, cartC[matched:])
+		if i == -1 {
+			return false
+		}
+		matched += i
 	}
-	return codeRegex.Match([]byte(basketString)), nil
+	return true
 }
 
 type encoder struct {
-	mapping map[string]int
+	codeMap map[string]int
 	next    int
-	Buf     strings.Builder
 }
+
+const (
+	anything = -1
+)
 
 func makeEncoder() encoder {
-	return encoder{mapping: make(map[string]int), next: 1000}
+	return encoder{make(map[string]int), 1}
 }
 
-func (enc *encoder) encodeSlice(slice []string) {
+func (enc *encoder) encodeSlice(slice []string) []int {
+	var res []int
 	for _, s := range slice {
-		if s == "anything" {
-			enc.Buf.WriteString("\\E.\\Q")
-			continue
-		}
 		code := enc.next
-		if c, ok := enc.mapping[s]; ok {
+		if s == "anything" {
+			code = anything
+		} else if c, ok := enc.codeMap[s]; ok {
 			code = c
 		} else {
-			enc.mapping[s] = code
 			enc.next++
-
+			enc.codeMap[s] = code
 		}
-		enc.Buf.WriteRune(rune(code))
+		res = append(res, code)
 	}
+	return res
 }
 
-func (enc *encoder) encodeCode(code [][]string) {
-	for _, ss := range code {
-		enc.Buf.WriteString(".*")
-		enc.Buf.WriteString("\\Q")
-		enc.encodeSlice(ss)
-		enc.Buf.WriteString("\\E")
+type kmp []int
+
+func (index *kmp) calc(pattern, target []int, build bool) int {
+	if len(pattern) == 0 {
+		return 0
 	}
-	enc.Buf.WriteString(".*")
+	p := 0
+	if build {
+		*index = append(*index, 0)
+		target = target[1:]
+	}
+	for i, x := range target {
+		for p != 0 && x != pattern[p] && pattern[p] != anything {
+			p = (*index)[p-1]
+		}
+		if x == pattern[p] || pattern[p] == anything {
+			p++
+		}
+		if build {
+			*index = append(*index, p)
+		} else if p == len(pattern) {
+			return i + 1
+		}
+	}
+	return -1
+}
+
+func (index *kmp) build(pattern []int) {
+	index.calc(pattern, pattern, true)
+}
+
+func (index *kmp) search(pattern, target []int) int {
+	return index.calc(pattern, target, false)
 }
