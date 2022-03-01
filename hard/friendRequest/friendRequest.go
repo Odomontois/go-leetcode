@@ -2,49 +2,46 @@ package friendrequest
 
 func friendRequests(n int, restrictions [][]int, requests [][]int) []bool {
 	res := make([]bool, 0, len(requests))
-	ufs := make([]uf, n)
+	uf := make(uf, n)
 	for _, req := range requests {
-		p1 := ufs[req[0]].getParent()
-		p2 := ufs[req[1]].getParent()
+		p1 := uf.getParent(req[0])
+		p2 := uf.getParent(req[1])
 		success := true
 		for _, rs := range restrictions {
-			rp1 := ufs[rs[0]].getParent()
-			rp2 := ufs[rs[1]].getParent()
-			success = success && (p1 != rp1 && p1 != rp2 || p2 != rp1 && p2 != rp2)
+			rp1 := uf.getParent(rs[0])
+			rp2 := uf.getParent(rs[1])
+			success = success && (p1 != rp1 || p2 != rp2) && (p2 != rp1 || p1 != rp2)
 			if !success {
 				break
 			}
 		}
 		res = append(res, success)
 		if success {
-			p1.union(p2)
+			uf.union(p1, p2)
 		}
 	}
 	return res
 }
 
-type uf struct {
-	parent *uf
-	size   int
-}
+type uf []int
 
-func (uf *uf) getParent() *uf {
-	if uf.parent == nil {
-		return uf
+func (uf uf) getParent(i int) int {
+	if uf[i] <= 0 {
+		return i
 	}
-	uf.parent = uf.parent.getParent()
-	return uf.parent
+	t := uf.getParent(uf[i] - 1)
+	uf[i] = t + 1
+	return t
 }
 
-func (p1 *uf) union(p2 *uf) {
+func (uf uf) union(p1, p2 int) {
 	if p1 == p2 {
 		return
 	}
-	if p1.size > p2.size {
-		p1.parent = p2
-		p2.size += p1.size + 1
+	size := uf[p1] + uf[p2] - 1
+	if uf[p1] < uf[p2] {
+		uf[p1], uf[p2] = size, p1+1
 	} else {
-		p2.parent = p1
-		p1.size += p2.size + 1
+		uf[p1], uf[p2] = p2+1, size
 	}
 }
