@@ -7,6 +7,7 @@ import (
 )
 
 func TestKthSmallest(t *testing.T) {
+	t.Skip("Skip Kth smallest")
 	tt := kthSmallest([][]int{{1, 5, 9}, {10, 11, 13}, {12, 13, 15}}, 8)
 	assert.Equal(t, 13, tt)
 }
