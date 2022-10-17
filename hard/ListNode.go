@@ -1,12 +1,12 @@
 package hard
 
-//ListNode is a node of linked list
+// ListNode is a node of linked list
 type ListNode struct {
 	Val  int
 	Next *ListNode
 }
 
-//MakeList creates list
+// MakeList creates list
 func MakeList(xs []int) (res *ListNode) {
 	res = nil
 	for i := len(xs) - 1; i >= 0; i-- {
@@ -15,7 +15,7 @@ func MakeList(xs []int) (res *ListNode) {
 	return
 }
 
-//ToSlice converts to slice
+// ToSlice converts to slice
 func (list *ListNode) ToSlice() (res []int) {
 	res = []int{}
 	for list != nil {
