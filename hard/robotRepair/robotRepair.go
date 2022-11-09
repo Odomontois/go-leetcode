@@ -35,11 +35,11 @@ func minimumTotalDistance(robots []int, factories [][]int) int64 {
 
 	sort.Slice(objects, func(i, j int) bool { return objects[i].position() < objects[j].position() })
 	objects = append(objects, end(objects[n-1].position()+1))
-	roboLimit := make([]int, n+1)
-	for i, cur := n, 0; i >= 0; i-- {
+	roboLimit := make([]int64, n+1)
+	for i, cur := n, int64(0); i >= 0; i-- {
 		switch objects[i].(type) {
 		case robot:
-			cur++
+			cur--
 		}
 		roboLimit[i] = cur
 	}
@@ -79,8 +79,7 @@ func minimumTotalDistance(robots []int, factories [][]int) int64 {
 			if remains >= 0 {
 				res = calc(i+1, remains) + remains*next
 			} else {
-				maxOrder := int64(-roboLimit[i])
-				for order := int64(0); order >= remains && order >= maxOrder; order-- {
+				for order := int64(0); order >= remains && order >= roboLimit[i]; order-- {
 					check := calc(i+1, order) - order*next
 					if check < res {
 						res = check
