@@ -15,7 +15,7 @@ func readWord() (word string) {
 func main() {
 	ch := make(chan string)
 	go func() { ch <- readWord() }()
-	ctx, f := context.WithTimeout(context.Background(), 5*time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 
 	select {
 	case word := <-ch:
