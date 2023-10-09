@@ -18,11 +18,11 @@ func minTaps(n int, ranges []int) int {
 		}
 
 	}
-	if x := segTree.RangeMin(n, n+1); x >= Inf {
-		return -1
-	} else {
+	if x := segTree.RangeMin(n, n+1); x < Inf {
 		return x
 	}
+	return -1
+
 }
 
 type SegTree []int
