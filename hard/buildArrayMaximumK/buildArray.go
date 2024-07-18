@@ -5,13 +5,13 @@ type caching[V any] interface {
 	precheck() (V, bool)
 }
 
-func debug(_ ...any) {
+func debug(xs ...any) {
 	// fmt.Println(xs...)
 }
 
-func Cached[K caching[V], V any](name string, calc func(K) V) (cached func(K) V) {
+func Cached[K caching[V], V any](name string, calc func(K) V) func(K) V {
 	cache := make(map[K]V)
-	cached = func(key K) V {
+	return func(key K) V {
 		if v, ok := key.precheck(); ok {
 			debug(name, "precheck", key, v)
 			return v
@@ -24,7 +24,6 @@ func Cached[K caching[V], V any](name string, calc func(K) V) (cached func(K) V)
 		debug(name, "result", key, res)
 		return res
 	}
-	return
 }
 
 type pk struct{ m, p int }
@@ -46,7 +45,7 @@ func (args build) precheck() (res int, ready bool) {
 	switch {
 	case args.k == 0 && args.n == 0:
 		return 1, true
-	case args.k == 0 || args.n == 0 || args.m == 0:
+	case args.k == 0 || args.n == 0 || args.m == 0 || args.k > args.n:
 		return 0, true
 	case args.m == 1 && args.k == 1:
 		return 1, true
