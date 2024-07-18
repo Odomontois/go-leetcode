@@ -1,10 +1,8 @@
 package y2024
 
-type TreeNode struct {
-	Val   int
-	Left  *TreeNode
-	Right *TreeNode
-}
+import "leetcode/data"
+
+type TreeNode = data.TreeNode
 
 func smallestFromLeaf(root *TreeNode) string {
 	var nodes, next []*TreeNode
